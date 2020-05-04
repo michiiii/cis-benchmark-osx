@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Section 1.1: Check for software updates
-echo "Section 1.1: Check for software updates"
+# Section 1.1:'Verify all Apple provided software is current (Scored) 
+echo "Section 1.1: Verify all Apple provided software is current (Scored)"
 echo "------------------------------------------------------------------------"
 echo "Find a list of software with available updates"
 echo "Output:"
@@ -70,8 +70,8 @@ echo "\"sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate Config
 echo "------------------------------------------------------------------------"
 echo "\n"
 
-# Section 1.6: Enable OS X update installs
-echo "Section 1.6: Enable OS X update installs"
+# Section 1.6: Enable macOS update installs (Scored) 
+echo "Section 1.6: Enable macOS update installs (Scored)"
 echo "------------------------------------------------------------------------"
 echo "Check that OS X updates are automatically installed."
 echo "Output:"
