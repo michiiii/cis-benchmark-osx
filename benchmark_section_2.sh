@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Section 2.1 Bluetooth:
-echo "Section 2.1: Audit Bluetooth settings"
+echo "Section 2.1.1: Turn off Bluetooth, if no paired devices exist (Scored)"
 echo "------------------------------------------------------------------------"
 echo "Output:"
 echo "======================================"
@@ -58,6 +58,19 @@ echo "\"sudo systemsetup –setnetworktimeserver on\""
 echo "------------------------------------------------------------------------"
 echo "\n"
 
+
+# Section 2.2.2: Ensure time set is within appropriate limits
+echo "Section 2.2.2: Ensure time set is within appropriate limits"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+sudo systemsetup -getnetworktimeserver
+echo "======================================"
+echo "\nNotes:"
+echo "check manually the time drift: sntp your.time.server | grep +/-"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
 # Section 2.3.1: Audit all system screensaver times
 echo "Section 2.3.1: Audit all system user screensaver times"
 echo "------------------------------------------------------------------------"
@@ -91,13 +104,13 @@ echo "Remove corners in System Preferences > Mission Control > Hot Corners"
 echo "------------------------------------------------------------------------"
 echo "\n"
 
-# Section 2.3.3: Display sleep and screensaver timer audit
-echo "Section 2.3.3: Display sleep and screensaver timer audit"
+# Section 2.3.3: Familiarize users with screen lock tools or corner to Start Screen
+echo "Section 2.3.3: Familiarize users with screen lock tools or corner to Start Screen Saver"
 echo "------------------------------------------------------------------------"
 echo "Check that Display sleep is set to a larger value than screensaver:"
 echo "Output:"
 echo "======================================"
-pmset -g | grep displaysleep
+defaults read ~/Library/Preferences/com.apple.dock | grep -i corner
 echo "======================================"
 echo "\nNotes:"
 echo "Check that this value is larger than the screensaver timer by going to:"
@@ -151,10 +164,10 @@ echo "Section 2.4.4: Disable printer sharing"
 echo "------------------------------------------------------------------------"
 echo "Output:"
 echo "======================================"
-system_profiler SPPrintersDataType | egrep "Shared: Yes"
+system_profiler SPPrintersDataType | egrep "System Printer Sharing"
 echo "======================================"
 echo "\nNotes:"
-echo "The output should be empty. If \"Shared: Yes\" is in the output there are still shared printers."
+echo "All output should be System Printer Sharing: No. If Sharing: Yes is in the output there are still shared printers"
 echo "To fix, uncheck \"Printer Sharing\" in System Preferences > Sharing."
 echo "------------------------------------------------------------------------"
 echo "\n"
@@ -210,7 +223,7 @@ echo "======================================"
 echo "Checking the Apple File Server status:"
 sudo launchctl list | egrep AppleFileServer
 echo "Checking the Windows File Server status:"
-grep -i array /Library/Preferences/SystemConfiguration/com.apple.smb.server.plist
+sudo launchctl list | egrep com.apple.smbd
 echo "======================================"
 echo "\nNotes:"
 echo "Ensure no output is present"
@@ -235,101 +248,132 @@ echo "Turn off Remote Management in System Preferences > Sharing."
 echo "------------------------------------------------------------------------"
 echo "\n"
 
-# Section 2.5.1: Disable wake for network access
-echo "Section 2.5.1: Disable wake for network access"
+# Section 2.4.10 Disable Content Caching
+echo "Section 2.4.10 Disable Content Caching"
 echo "------------------------------------------------------------------------"
 echo "Output:"
 echo "======================================"
-pmset -c -g | grep womp; pmset -b -g | grep womp
+echo "Check Manually"
 echo "======================================"
-echo "\nNotes:"
-echo "Verify that both values returned are 0."
-echo "To implement the prescribed state run the following command:"
-echo "\"sudo pmset -a womp 0\""
 echo "------------------------------------------------------------------------"
 echo "\n"
 
-# Section 2.6.1: Enable FileVault
-echo "Section 2.6.1: Enable FileVault"
+# Section 2.4.11 Disable Media Sharing (Scored)
+echo "Section 2.4.11 Disable Media Sharing (Scored)"
 echo "------------------------------------------------------------------------"
 echo "Output:"
 echo "======================================"
-diskutil cs list | grep -i encryption
+echo "Check Manually"
 echo "======================================"
-echo "\nNotes:"
-echo "On a booted system, the Logical Volume should be both encrypted and unlocked."
 echo "------------------------------------------------------------------------"
 echo "\n"
 
-# Section 2.6.2: Enable Gatekeeper
-echo "Section 2.6.2: Enable Gatekeeper"
+# Section 2.5.1.1 Enable FileVault
+echo "Section 2.5.1.1 Enable FileVault"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+fdesetup status
+echo "======================================"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+# Section 2.5.1.2 Ensure all user storage APFS volumes are encrypted
+echo "Section 2.5.1.2 Ensure all user storage APFS volumes are encrypted"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+diskutil ap list
+echo "======================================"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+# Section 2.5.1.3 Ensure all user storage CoreStorage volumes are encrypted 
+echo "Section 2.5.1.3 Ensure all user storage CoreStorage volumes are encrypted"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+diskutil cs list
+echo "======================================"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+# Section 2.5.2 Enable Gatekeeper
+echo "Section 2.5.2 Enable Gatekeeper"
 echo "------------------------------------------------------------------------"
 echo "Output:"
 echo "======================================"
 sudo spctl --status
 echo "======================================"
-echo "\nNotes:"
-echo "Ensure the above command outputs \"assessments enabled\"."
-echo "To implement the prescribed state:"
-echo "Manage the menu in System Preferences > Security & Priviacy > General"
 echo "------------------------------------------------------------------------"
 echo "\n"
 
-# Section 2.6.3: Enable Firewall
-echo "Section 2.6.3: Enable Firewall"
+# Section 2.5.3 Enable Firewall
+echo "Section 2.5.3 Enable Firewall"
 echo "------------------------------------------------------------------------"
 echo "Output:"
 echo "======================================"
 defaults read /Library/Preferences/com.apple.alf globalstate
 echo "======================================"
-echo "\nNotes:"
-echo "Verify the value returned is 1 or 2"
-echo "Perform the following to implement the prescribed state:"
-echo "Turn on Firewall in System Preferences > Security & Privacy > Firewall"
 echo "------------------------------------------------------------------------"
 echo "\n"
 
-# Section 2.6.4: Enable Firewall Stealth Mode
-echo "Section 2.6.4: Enable Firewall Stealth Mode"
+# Section 2.5.4 Enable Firewall Stealth Mode
+echo "Section 2.5.4 Enable Firewall Stealth Mode"
 echo "------------------------------------------------------------------------"
 echo "Output:"
 echo "======================================"
 /usr/libexec/ApplicationFirewall/socketfilterfw --getstealthmode
 echo "======================================"
-echo "\nNotes:"
-echo "Verify the value returned is Stealth mode enabled"
-echo "Perform the following to implement the prescribed state:"
-echo "Enable stealth mode in System Preferences > Security & Privacy > Firewall Options"
-echo "or run the following command:"
-echo "\"sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on\""
 echo "------------------------------------------------------------------------"
 echo "\n"
 
-# Section 2.6.5: Show Application Firewall Rules
-echo "Section 2.6.5: Show Application Firewall Rules"
+# Section 2.5.5 Review Application Firewall Rules
+echo "Section 2.5.5 Review Application Firewall Rules"
 echo "------------------------------------------------------------------------"
 echo "Output:"
 echo "======================================"
 /usr/libexec/ApplicationFirewall/socketfilterfw --listapps
 echo "======================================"
-echo "\nNotes:"
-echo "The number of rules returned should be lower than 10."
-echo "Perform the following to implement the prescribed state:"
-echo "Manage firewall options in System Preferences > Security & Privacy > Firewall Options"
-echo "or run the following command (insert Application name):"
-echo "\"/usr/libexec/ApplicationFirewall/socketfilterfw --remove </Applications/badapp.app>\""
 echo "------------------------------------------------------------------------"
 echo "\n"
 
-
-# Section 2.10: Audit default Java runtime version
-echo "Section 2.10: Audit default Java runtime version"
+# Section 2.5.6 Enable Location Services
+echo "Section 2.5.6 Enable Location Services"
 echo "------------------------------------------------------------------------"
 echo "Output:"
 echo "======================================"
-java -version
+sudo launchctl load /System/Library/LaunchDaemons/com.apple.locationd.plist
 echo "======================================"
-echo "\nNotes:"
-echo "Java should not be version 6"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+# Section 2.5.7 Monitor Location Services Access
+echo "Section 2.5.6 Enable Location Services"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+sudo defaults read /var/db/locationd/clients.plist
+echo "======================================"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+# Section 2.5.8 Disable Analytics & Improvements sharing with Apple
+echo "Section 2.5.8 Disable Analytics & Improvements sharing with Apple"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+echo "Manual audit"
+echo "======================================"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+# Section 2.5.9 Review Advertising settings
+echo "Section 2.5.9 Review Advertising settings"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+defaults read ~/Library/Preferences/com.apple.AdLib.plist | egrep forceLimitAdTracking
+echo "======================================"
 echo "------------------------------------------------------------------------"
 echo "\n"
