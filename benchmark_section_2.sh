@@ -377,3 +377,139 @@ defaults read ~/Library/Preferences/com.apple.AdLib.plist | egrep forceLimitAdTr
 echo "======================================"
 echo "------------------------------------------------------------------------"
 echo "\n"
+
+# Section 2.6.1 iCloud configuration (Not Scored)
+echo "Section 2.6.1 iCloud configuration (Not Scored)"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+defaults read ~/Library/Preferences/MobileMeAccounts.plist
+echo "======================================"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+
+# Section 2.6.2 iCloud keychain
+echo "Section 2.6.2 iCloud keychain"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+echo "Manual Review: Review defaults read ~/Library/Preferences/MobileMeAccounts.plist"
+read ~/Library/Preferences/MobileMeAccounts.plist
+echo "======================================"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+
+# Section 2.6.3 iCloud Drive
+echo "Section 2.6.3 iCloud Drive"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+echo "Manual Review: Review defaults read ~/Library/Preferences/MobileMeAccounts.plist"
+read ~/Library/Preferences/MobileMeAccounts.plist
+echo "======================================"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+
+# Section 2.6.4 iCloud Drive Document sync
+echo "Section 2.6.4 iCloud Drive Document sync"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+echo "Manual Review: Review defaults read ~/Library/Preferences/MobileMeAccounts.plist"
+read ~/Library/Preferences/MobileMeAccounts.plist
+echo "======================================"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+# Section 2.6.5 iCloud Drive Document sync
+echo "Section 2.6.5 iCloud Drive Document sync"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+ls -l ~/Library/Mobile\ Documents/com~apple~CloudDocs/Documents/ | grep total
+echo "======================================"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+# Section 2.7.1 Time Machine Auto-Backup
+echo "Section 2.7.1 Time Machine Auto-Backup"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+defaults read /Library/Preferences/com.apple.TimeMachine.plist AutoBackup
+echo "Backup frequency"
+defaults read /Library/Preferences/com.apple.TimeMachine.plist | egrep Snapshot
+echo "======================================"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+# Section 2.7.2 Time Machine Volumes Are Encrypted
+echo "Section 2.7.2 Time Machine Volumes Are Encrypted"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+defaults read /Library/Preferences/com.apple.TimeMachine.plist | egrep LastKnownEncryptionState
+echo "======================================"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+
+# Section 2.8 Pair the remote control infrared receiver if enabled
+echo "Section 2.8 Pair the remote control infrared receiver if enabled"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+/usr/sbin/system_profiler SPUSBDataType
+echo "======================================"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+
+# Section 2.9 Enable Secure Keyboard Entry in terminal.app
+echo "Section 2.9 Enable Secure Keyboard Entry in terminal.app"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+defaults read -app Terminal SecureKeyboardEntry
+echo "======================================"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+
+# Section 2.10 Securely delete files as needed (Not Scored)
+echo "Section 2.10 Securely delete files as needed (Not Scored)"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+echo "Manual Audit"
+echo "======================================"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+
+# Section 2.11 Ensure EFI version is valid and being regularly checked
+echo "Section 2.11 Ensure EFI version is valid and being regularly checked "
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+echo "Manual Audit"
+echo "======================================"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+# Section 2.12 Disable "Wake for network access" and "Power Nap"
+echo "Section 2.12 Disable \"Wake for network access\" and \"Power Nap\""
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================"
+echo "Wake for network access"
+pmset -g | egrep womp
+echo "Power Nap"
+pmset -g | egrep powernap
+echo "======================================"
+echo "------------------------------------------------------------------------"
+echo "\n"
+
