@@ -1,53 +1,13 @@
 #!/bin/bash
 
-# Section 3.1.1: Check system.log configuration
-echo "Section 3.1.1: Check system.log configuration"
+
+# Section 3.1: Enable security auditing
+echo "Section 3.1: Enable security auditing"
 echo "------------------------------------------------------------------------"
 echo "Output:"
-grep -i ttl /etc/asl.conf
-echo "\nNotes:"
-echo "Verify that the ttl for system.log is greater than 90 days."
-echo "Perform the following to implement the prescribed state:"
-echo "\"sudo vim /etc/asl.conf\""
-echo "Replace or edit the current setting with a compliant setting such as:"
-echo "system.log mode=0640 format=bsd rotate=utc compress file_max=5M ttl=90"
-echo "------------------------------------------------------------------------"
-echo "\n"
-
-
-# Section 3.1.2: Check appfirewall.log configuration
-echo "Section 3.1.2: Check appfirewall.log configuration"
-echo "------------------------------------------------------------------------"
-echo "Output:"
-grep -i ttl /etc/asl.conf
-echo "\nNotes:"
-echo "Verify that the ttl for system.log is greater than 90 days."
-echo "Perform the following to implement the prescribed state:"
-echo "\"sudo vim /etc/asl.conf\""
-echo "Replace or edit the current setting with a compliant setting such as:"
-echo "appfirewall.log mode=0640 format=bsd rotate=utc compress file_max=5M ttl=90"
-echo "------------------------------------------------------------------------"
-echo "\n"
-
-# Section 3.1.3: Check authd.log configuration
-echo "Section 3.1.3: Check authd.log configuration"
-echo "------------------------------------------------------------------------"
-echo "Output:"
-grep -i ttl /etc/asl/com.apple.authd
-echo "\nNotes:"
-echo "Verify that the ttl for system.log is greater than 90 days."
-echo "Perform the following to implement the prescribed state:"
-echo "\"sudo vim /etc/asl/com.apple.authd\""
-echo "Replace or edit the current setting with a compliant setting such as:"
-echo "* file /var/log/authd.log mode=0640 format=bsd rotate=utc compress file_max=5M ttl=90"
-echo "------------------------------------------------------------------------"
-echo "\n"
-
-# Section 3.2: Enable security auditing
-echo "Section 3.2: Enable security auditing"
-echo "------------------------------------------------------------------------"
-echo "Output:"
+echo "======================================================="
 sudo launchctl list | grep -i auditd
+echo "======================================================="
 echo "\nNotes:"
 echo "Verify that \"com.apple.auditd\" appears."
 echo "Perform the following to implement the prescribed state:"
@@ -55,11 +15,14 @@ echo "\"sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.auditd.pl
 echo "------------------------------------------------------------------------"
 echo "\n"
 
-# Section 3.3: Configure security auditing flags
-echo "Section 3.3: Configure security auditing flags"
+
+# Section Configure Security Auditing Flags per local organizational requirements
+echo "Section 3.2: Configure Security Auditing Flags per local organizational requirements"
 echo "------------------------------------------------------------------------"
 echo "Output:"
+echo "======================================================="
 sudo egrep "^flags:" /etc/security/audit_control
+echo "======================================================="
 echo "\nNotes:"
 echo "Verify that at least the following flags are present:"
 echo "\tlo - audit successful/failed login/logout events"
@@ -73,16 +36,58 @@ echo "Add the lo, ad, fd, fm, -all flags."
 echo "------------------------------------------------------------------------"
 echo "\n"
 
-# Section 3.5: Retain install.log configuration
-echo "Section 3.3: install.log retaining configuration"
+# Section 3.3: Ensure security auditing retention
+echo "Section 3.3: Ensure security auditing retention"
 echo "------------------------------------------------------------------------"
 echo "Output:"
-grep -i ttl /etc/asl/com.apple.install
+echo "======================================================="
+sudo cat /etc/security/audit_control | egrep expire-after
+echo "======================================================="
 echo "\nNotes:"
-echo "Verify that ttl is 365 or higher for install.log"
+echo "Verify that \"com.apple.auditd\" appears."
 echo "Perform the following to implement the prescribed state:"
-echo "\"sudo vim /etc/asl/com.apple.install\""
-echo "Replace the current setting with a compliant setting such as:"
-echo "* file /var/log/install.log mode=0640 format=bsd rotate=utc compress file_max=5M ttl=365"
+echo "\"sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.auditd.plist\""
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+# Section 3.4 Control access to audit records
+echo "Section 3.4 Control access to audit records"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================================="
+ls -le /etc/security/audit_control
+sudo ls -le /var/audit/
+echo "======================================================="
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+# Section 3.4 Control access to audit records
+echo "Section 3.4 Control access to audit records"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================================="
+ls -le /etc/security/audit_control
+sudo ls -le /var/audit/
+echo "======================================================="
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+# Section 3.5 Retain install.log for 365 or more days
+echo "Section 3.5 Retain install.log for 365 or more days"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================================="
+grep -i ttl /etc/asl/com.apple.install
+echo "======================================================="
+echo "------------------------------------------------------------------------"
+echo "\n"
+
+# Section 3.6 Ensure Firewall is configured to log
+echo "Section 3.6 Ensure Firewall is configured to log"
+echo "------------------------------------------------------------------------"
+echo "Output:"
+echo "======================================================="
+/usr/libexec/ApplicationFirewall/socketfilterfw --getloggingmode
+echo "======================================================="
 echo "------------------------------------------------------------------------"
 echo "\n"
