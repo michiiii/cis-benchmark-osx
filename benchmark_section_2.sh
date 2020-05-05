@@ -495,7 +495,7 @@ echo "Section 2.11 Ensure EFI version is valid and being regularly checked "
 echo "------------------------------------------------------------------------"
 echo "Output:"
 echo "======================================"
-echo "Manual Audit"
+system_profiler SPiBridgeDataType | awk -F: '/Model Name/ {print $NF}' | sed 's/^ *//'
 echo "======================================"
 echo "------------------------------------------------------------------------"
 echo "\n"
