@@ -76,7 +76,7 @@ echo "------------------------------------------------------------------------"
 echo "Check that OS X updates are automatically installed."
 echo "Output:"
 echo "==================================================="
-defaults read /Library/Preferences/com.apple.commerce AutoUpdateRestartRequired
+defaults read /Library/Preferences/com.apple.SoftwareUpdate AutomaticallyInstallMacOSUpdates
 echo "==================================================="
 echo "\nNotes:"
 echo "Results should be 1. If output does not match use the following command:"
